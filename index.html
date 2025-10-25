@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Comparison & Converter</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Image Comparison & Converter</h1>
+            <p>Upload, compare, and convert your images</p>
+        </header>
+
+        <div class="upload-section">
+            <div class="upload-box" id="uploadBox1">
+                <input type="file" id="fileInput1" accept="image/*" hidden>
+                <div class="upload-content">
+                    <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="17 8 12 3 7 8"></polyline>
+                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                    </svg>
+                    <h3>UPLOAD</h3>
+                    <p>IMAGE 1</p>
+                    <span class="file-info" id="fileInfo1"></span>
+                </div>
+                <img id="preview1" class="preview-image" alt="Preview 1">
+                <button class="remove-btn" id="removeBtn1">×</button>
+            </div>
+
+            <div class="upload-box" id="uploadBox2">
+                <input type="file" id="fileInput2" accept="image/*" hidden>
+                <div class="upload-content">
+                    <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="17 8 12 3 7 8"></polyline>
+                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                    </svg>
+                    <h3>UPLOAD</h3>
+                    <p>IMAGE 2</p>
+                    <span class="file-info" id="fileInfo2"></span>
+                </div>
+                <img id="preview2" class="preview-image" alt="Preview 2">
+                <button class="remove-btn" id="removeBtn2">×</button>
+            </div>
+        </div>
+
+        <div class="controls-section">
+            <div class="control-group">
+                <div class="dropdown">
+                    <button class="dropdown-btn" id="formatBtn">
+                        <span>NEW IMAGE FORMAT</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="dropdown-content" id="formatDropdown">
+                        <div class="dropdown-item" data-value="jpeg">JPEG</div>
+                        <div class="dropdown-item" data-value="png">PNG</div>
+                        <div class="dropdown-item" data-value="webp">WebP</div>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <button class="dropdown-btn" id="sizeBtn">
+                        <span>NEW IMAGE SIZE</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="dropdown-content" id="sizeDropdown">
+                        <div class="dropdown-item" data-value="original">Original Size</div>
+                        <div class="dropdown-item" data-value="custom-kb">Custom Size (KB)</div>
+                        <div class="dropdown-item" data-value="custom">Custom Dimensions (px)</div>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <button class="dropdown-btn" id="qualityBtn">
+                        <span>NEW IMAGE QUALITY</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="dropdown-content" id="qualityDropdown">
+                        <div class="dropdown-item" data-value="1.0">High Quality (100%)</div>
+                        <div class="dropdown-item" data-value="0.9">Very Good (90%)</div>
+                        <div class="dropdown-item" data-value="0.8">Good (80%)</div>
+                        <div class="dropdown-item" data-value="0.7">Medium (70%)</div>
+                        <div class="dropdown-item" data-value="0.5">Low (50%)</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <input type="text" id="outputName" placeholder="NAME THE IMAGE..." class="name-input">
+            </div>
+
+            <div class="custom-size-inputs" id="customSizeInputs" style="display: none;">
+                <input type="number" id="customWidth" placeholder="Width (px)" min="1">
+                <input type="number" id="customHeight" placeholder="Height (px)" min="1">
+                <label>
+                    <input type="checkbox" id="maintainAspectRatio" checked>
+                    Maintain aspect ratio
+                </label>
+            </div>
+
+            <div class="custom-size-inputs" id="customKBInputs" style="display: none;">
+                <input type="number" id="targetFileSize" placeholder="Target file size in KB" min="1">
+                <p style="grid-column: 1 / -1; margin: 0; font-size: 0.9em; color: #666;">
+                    The image will be automatically resized to match the target file size as closely as possible.
+                </p>
+            </div>
+        </div>
+
+        <div class="comparison-section" id="comparisonSection" style="display: none;">
+            <h2>Conversion Results</h2>
+            <div class="comparison-stats">
+                <div class="stat-card">
+                    <h3>Merged Original</h3>
+                    <p id="originalSize">Size: --</p>
+                    <p id="originalDimensions">Dimensions: --</p>
+                    <p id="originalFormat">Format: --</p>
+                </div>
+                <div class="stat-card highlight">
+                    <h3>Final Output</h3>
+                    <p id="convertedSize">Size: --</p>
+                    <p id="convertedDimensions">Dimensions: --</p>
+                    <p id="convertedFormat">Format: --</p>
+                    <p id="sizeDifference" class="difference">--</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <button class="btn btn-convert" id="convertBtn">Merge & Convert Images</button>
+            <button class="btn btn-download" id="downloadBtn" disabled>Download Final Image</button>
+            <button class="btn btn-reset" id="resetBtn">Reset All</button>
+        </div>
+        
+        <div class="merge-preview" id="mergePreview" style="display: none;">
+            <h3>Final Output Preview (This will be downloaded)</h3>
+            <canvas id="mergeCanvas" style="max-width: 100%; border: 2px solid #667eea; border-radius: 10px;"></canvas>
+        </div>
+    </div>
+
+    <canvas id="canvas" style="display: none;"></canvas>
+    <script src="index.js"></script>
+</body>
+</html>
